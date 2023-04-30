@@ -18,9 +18,20 @@ mongoose.connect(process.env.MONGO_URI)
     console.error(err);
   })
 
+app.get('/', (req, res, next) => {
+  setImmediate(() => { next(new Error('it is an error'))});
+})
+
 app.post('/', (req, res) => {
   console.log(req.body);
   res.json(req.body);
+})
+
+app.use('/users', require('./routes/users'));
+
+app.use((error, req, res, next) => {
+  res.status(err.status || 500);
+  res.send(error.message || 'Error in server');
 })
 
 app.use(express.static(path.join(__dirname, '../uploads')));
