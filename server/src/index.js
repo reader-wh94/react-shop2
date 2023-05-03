@@ -30,7 +30,7 @@ app.post('/', (req, res) => {
 app.use('/users', require('./routes/users'));
 
 app.use((error, req, res, next) => {
-  res.status(err.status || 500);
+  res.status(error.status || 500);
   res.send(error.message || 'Error in server');
 })
 
