@@ -24,6 +24,7 @@ module.exports = {
     "no-unused-vars": 0,
     "no-multiple-empty-lines": 0,
     "space-before-function-paren": 0,
-    "eol-last": 0
+    "eol-last": 0,
+    "react/prop-types": "off"
   },
 }
