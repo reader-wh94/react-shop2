@@ -40,7 +40,7 @@ const LoginPage = () => {
     <section className='flex flex-col justify-center mt-20 max-w-[400px] m-auto`'>
       <div className='p-6 bg-white rounded-md shadow-md'>
         <h1 className='text-3xl font-semibold text-black text-center'>
-          회원가입
+          로그인
         </h1>
         <form className='mt-6' onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-2'>
