@@ -13,6 +13,10 @@ import { authUser } from './store/thunkFunctions';
 import ProtectedPage from './pages/ProtectedPage/index';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import NotAuthRoutes from './components/NotAuthRoutes';
+import HistoryPage from './pages/HistoryPage/index';
+import CartPage from './pages/CartPage/index';
+import DetailProductPage from './pages/DetailProductPage/index';
+import UploadProductPage from './pages/UploadProductPage/index';
 
 
 function Layout() {
@@ -53,6 +57,10 @@ function App() {
 
         <Route element={<ProtectedRoutes isAuth={isAuth}/>}>
           <Route path='/protected' element={<ProtectedPage />} />
+          <Route path='/product/upload' element={<UploadProductPage />} />
+          <Route path='/product/:productId' element={<DetailProductPage />} />
+          <Route path='/user/cart' element={<CartPage />} />
+          <Route path='/history' element={<HistoryPage />} />
         </Route>
 
         <Route element={<NotAuthRoutes isAuth={isAuth} />}>
