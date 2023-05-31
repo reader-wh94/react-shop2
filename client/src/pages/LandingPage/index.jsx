@@ -4,6 +4,7 @@ import RadioBox from './Sections/RadioBox';
 import SearchInput from './Sections/SearchInput';
 import CardItem from './Sections/CardItem';
 import axiosInstance from '../../utils/axios';
+import { continents } from '../../utils/filterData';
 
 const LandingPage = () => {
 
@@ -55,6 +56,25 @@ const LandingPage = () => {
     setSkip(skip + limit);
   };
 
+  const handleFilters = (newFilteredData, category) => {
+    const newFilters = { ...filters };
+    newFilters[category] = newFilteredData;
+
+    setFilters(newFilters);
+    showFilteredResults(newFilters);
+  };
+
+  const showFilteredResults = (filters) => {
+    const body = {
+      skip: 0,
+      limit: 4,
+      filters
+    };
+
+    fetchProducts(body);
+    setSkip(0);
+  };
+
   return (
     <section>
       <div className='text-center m-7'>
@@ -63,7 +83,9 @@ const LandingPage = () => {
       
       <div className='flex gap-3'>
         <div className='w-1/2'>
-          <CheckBox />
+          <CheckBox continents={continents} checkedContinents={filters.continents} 
+            onFilters={filters => handleFilters(filters, "continents")}
+          />
         </div>
         <div className='w-1/2'>
           <RadioBox />
