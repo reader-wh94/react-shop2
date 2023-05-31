@@ -8,8 +8,8 @@ import axiosInstance from '../../utils/axios';
 const LandingPage = () => {
 
   const limit = 4;
-  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [products, setProducts] = useState([]);
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [filters, setFilters] = useState({
@@ -32,10 +32,27 @@ const LandingPage = () => {
 
     try {
       const response = await axiosInstance.get('/products', { params });
-      setProducts(response.data.products);
+
+      if (loadMore) {
+        setProducts([...products, ...response.data.products]);
+      } else {
+        setProducts(response.data.products);
+      }
+      setHasMore(response.data.hasMore);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleLoadMore = () => {
+    const body = {
+      skip: skip + limit,
+      limit,
+      loadMore: true,
+      filters
+    };
+    fetchProducts(body);
+    setSkip(skip + limit);
   };
 
   return (
@@ -58,21 +75,21 @@ const LandingPage = () => {
       </div>
 
       <div className='grid grid-cols-2 gap-4 sm:grid-cols-4 '>
-        {products.map(product => 
-          <CardItem product={product} key={product._id}/>
+        {products && products.map((product, idx) => 
+          <CardItem product={product} key={idx}/>
         )}
       </div>
 
       {hasMore && 
         <div className='flex justify-center mt-5'>
-          <button className='px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500'>
+          <button
+            onClick={handleLoadMore}
+            className='px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500'>
             더 보기
           </button>
         </div>
       }
-      
-
-
+    
     </section>
   );
 };
