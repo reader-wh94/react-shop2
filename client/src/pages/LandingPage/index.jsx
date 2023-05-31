@@ -50,7 +50,8 @@ const LandingPage = () => {
       skip: skip + limit,
       limit,
       loadMore: true,
-      filters
+      filters,
+      searchTerm
     };
     fetchProducts(body);
     setSkip(skip + limit);
@@ -84,11 +85,25 @@ const LandingPage = () => {
     const body = {
       skip: 0,
       limit: 4,
-      filters
+      filters,
+      searchTerm
     };
 
     fetchProducts(body);
     setSkip(0);
+  };
+
+  const handelSearchTerm = (event) => {
+    const body = {
+      skip: 0,
+      limit,
+      filters,
+      searchTerm: event.target.value
+    };
+
+    setSkip(0);
+    setSearchTerm(event.target.value);
+    fetchProducts(body);
   };
 
   return (
@@ -111,7 +126,7 @@ const LandingPage = () => {
       </div>
         
       <div className='flex justify-end'>
-        <SearchInput />
+        <SearchInput searchTerm={searchTerm} onSearch={handelSearchTerm} />
       </div>
 
       <div className='grid grid-cols-2 gap-4 sm:grid-cols-4 '>
