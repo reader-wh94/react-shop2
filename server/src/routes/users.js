@@ -60,4 +60,43 @@ router.post('/logout', auth, async (req, res, next) => {
   }
 });
 
+router.post('/cart', auth, async (req, res, next) => {
+  try {
+    const userInfo = await User.findOne({ _id: req.user._id });
+
+    let duplicate = false;
+    userInfo.cart.forEach((item) => {
+      if(item.id === req.body.productId) {
+        duplicate = true;
+      }
+    })
+
+    if (duplicate) {
+      const user = await User.findOneAndUpdate(
+        { _id: req.user._id, "cart.id": req.body.productId },
+        { $inc: { "cart.$.quantity": 1 } },
+        { new: true }
+      )
+      return res.status(201).send(user.cart);
+    } else {
+      const user = await User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          $push: {
+            cart: {
+              id: req.body.productId,
+              quantity: 1,
+              date: Date.now()
+            }
+          }
+        },
+        { new: true }
+      )
+      return res.status(201).send(user.cart);
+    }
+  } catch (error) {
+      next(error);
+  }
+});
+
 module.exports = router;
